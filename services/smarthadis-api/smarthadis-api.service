@@ -1,0 +1,15 @@
+[Unit]
+Description=SmartHadis Rust API (backend foundation)
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=smarthadis-api
+WorkingDirectory=/opt/smarthadis-api
+EnvironmentFile=/opt/smarthadis-api/.env
+ExecStart=/opt/smarthadis-api/bin/smarthadis-api
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

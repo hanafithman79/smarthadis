@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartHadis Staff</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:360px;margin:60px auto;padding:0 16px}
+  input{width:100%;padding:10px;margin:6px 0;box-sizing:border-box}
+  button{width:100%;padding:10px;margin:6px 0}
+  #err{color:#c0392b}
+</style>
+</head>
+<body>
+<h1>SmartHadis Staff</h1>
+<form id="loginForm">
+  <input id="email" type="email" placeholder="Email" required>
+  <input id="password" type="password" placeholder="Kata laluan" required>
+  <button type="submit">Log masuk</button>
+</form>
+<button id="btnPasskey" type="button" hidden>Guna Passkey</button>
+<p id="err"></p>
+<div id="landed" hidden>
+  <p>Selamat datang, <span id="whoami"></span>. Peranan: <span id="role"></span>.</p>
+</div>
+<script>
+var SB_URL = "https://smarthadis.lynx.my";
+
+function pkB64urlKeBuf(b64url){
+  var pad = "=".repeat((4 - b64url.length % 4) % 4);
+  var b64 = (b64url + pad).replace(/-/g, "+").replace(/_/g, "/");
+  var bin = atob(b64);
+  var buf = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  return buf.buffer;
+}
+function pkBufKeB64url(buf){
+  var bytes = new Uint8Array(buf);
+  var bin = "";
+  for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function pkNyahkodOptionMasuk(opts){
+  opts.challenge = pkB64urlKeBuf(opts.challenge);
+  if (opts.allowCredentials) opts.allowCredentials.forEach(function(c){ c.id = pkB64urlKeBuf(c.id); });
+  return opts;
+}
+function pkEnkodAsersi(cred){
+  return {
+    id: cred.id, rawId: pkBufKeB64url(cred.rawId), type: cred.type,
+    response: {
+      clientDataJSON: pkBufKeB64url(cred.response.clientDataJSON),
+      authenticatorData: pkBufKeB64url(cred.response.authenticatorData),
+      signature: pkBufKeB64url(cred.response.signature),
+      userHandle: cred.response.userHandle ? pkBufKeB64url(cred.response.userHandle) : null
+    }
+  };
+}
+function pkSokong(){ return !!(window.PublicKeyCredential && navigator.credentials); }
+
+function tunjukRalat(msg){ document.getElementById("err").textContent = msg || ""; }
+
+function masukBerjaya(token){
+  sessionStorage.setItem("smarthadis.staffToken", token);
+  var payload = JSON.parse(atob(token.split(".")[1]));
+  document.getElementById("whoami").textContent = payload.email;
+  document.getElementById("role").textContent = payload.role;
+  document.getElementById("loginForm").hidden = true;
+  document.getElementById("btnPasskey").hidden = true;
+  document.getElementById("landed").hidden = false;
+}
+
+document.getElementById("loginForm").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  tunjukRalat("");
+  fetch(SB_URL + "/auth/login/password", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    })
+  }).then(function(r){
+    if(!r.ok) throw new Error("Email atau kata laluan tidak sah.");
+    return r.json();
+  }).then(function(data){
+    masukBerjaya(data.token);
+  }).catch(function(e){ tunjukRalat(e.message); });
+});
+
+var pkBtn = document.getElementById("btnPasskey");
+if(pkSokong()) pkBtn.hidden = false;
+pkBtn.addEventListener("click", function(){
+  tunjukRalat("");
+  fetch(SB_URL + "/auth/login/options", {
+    method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"
+  }).then(function(r){ return r.json(); }).then(function(data){
+    var options = pkNyahkodOptionMasuk(JSON.parse(data.options));
+    return navigator.credentials.get({publicKey: options}).then(function(cred){
+      return fetch(SB_URL + "/auth/login/verify", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({challenge_key: data.challenge_key, credential: pkEnkodAsersi(cred)})
+      });
+    });
+  }).then(function(r){
+    if(!r.ok) throw new Error("Passkey tidak dikenali.");
+    return r.json();
+  }).then(function(data){ masukBerjaya(data.token); })
+    .catch(function(e){ tunjukRalat(e.message); });
+});
+</script>
+</body>
+</html>

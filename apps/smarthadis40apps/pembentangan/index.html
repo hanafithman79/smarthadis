@@ -1,0 +1,1407 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="SmartHadis — pembelajaran hafazan hadis dibantu AI untuk Sekolah Kebangsaan Bunut Susu.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/logo.png">
+<title>SmartHadis</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --ink:#12161F;
+  --ink-2:#5B6472;
+  --ink-3:#8D94A1;
+  --surface:#FFFFFF;
+  --surface-2:#F4F6FA;
+  --surface-3:#EAEEF5;
+  --line:#E6E9EF;
+  --accent:#2F7FE0;
+  --accent-2:#56A6F2;
+  --accent-soft:#E8F1FD;
+  --accent-ink:#FFFFFF;
+  --navy:#10141C;
+  --navy-2:#1B2230;
+  --navy-line:#2A3242;
+  --shadow:0 2px 6px rgba(16,20,28,.05), 0 20px 44px rgba(16,20,28,.12);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:800;letter-spacing:-.02em}
+p,li{margin:0}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px}
+
+.gutter{padding-inline:24px}
+@media (min-width:860px){.gutter{padding-inline:64px}}
+.wrap{max-width:1180px;margin-inline:auto}
+section{padding-block:clamp(52px,8vw,108px);scroll-margin-top:72px}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.center{text-align:center}
+.center .eyebrow{display:block}
+.sec-head{max-width:560px;margin:14px auto 0}
+.sec-head h2{font-size:clamp(28px,4vw,42px)}
+.sec-head p{margin-top:14px;color:var(--ink-2);font-size:15px}
+
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:14.5px;font-weight:700;border-radius:12px;
+  padding:14px 24px;border:1.5px solid transparent}
+.btn.solid{background:var(--accent);color:var(--accent-ink)}
+.btn.outline{border-color:rgba(255,255,255,.5);color:#fff}
+.btn.outline.dark{border-color:var(--line);color:var(--ink)}
+
+/* ---- hero ---- */
+.hero{position:relative;padding-block:0;background:var(--surface-2)}
+.hero-nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+@media (min-width:860px){.hero-nav{padding:16px 64px}}
+.hero-nav .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:800;font-size:18px;flex:none}
+.hero-nav .brand img{width:30px;height:30px;border-radius:8px;display:block}
+.hero-nav .links{display:none;gap:4px;font-size:13.5px;font-weight:600;color:var(--ink-2);overflow-x:auto}
+.hero-nav .links a{padding:8px 12px;border-radius:999px;white-space:nowrap;flex:none}
+.hero-nav .links a:hover{background:var(--surface-2);color:var(--ink)}
+@media (min-width:900px){.hero-nav .links{display:flex}}
+
+/* ---- floating dropdown menu (all 16 slaid) ---- */
+.menu-wrap{position:relative}
+.menu-toggle{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:9px 14px 9px 16px}
+.menu-toggle svg{width:14px;height:14px;transition:transform .2s}
+.menu-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.menu-panel{position:absolute;top:calc(100% + 10px);right:0;width:280px;max-height:min(70vh,520px);overflow-y:auto;
+  background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:8px;z-index:40}
+.menu-panel[hidden]{display:none}
+.menu-panel a{display:flex;align-items:baseline;gap:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;
+  font-weight:600;color:var(--ink-2)}
+.menu-panel a:hover{background:var(--surface-2);color:var(--ink)}
+.menu-panel a i{font-style:normal;font-size:11px;font-weight:800;color:var(--ink-3);flex:none;width:18px}
+.menu-panel a.sub{padding-left:30px;font-weight:500}
+.hero-photo{max-width:1180px;margin:0 auto;padding:28px 24px}
+.hero-photo img{width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);display:block}
+
+/* ---- header slider ---- */
+.hslider{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);background:var(--surface-3)}
+.hslider-track{display:flex;align-items:flex-start;transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.hslide{flex:0 0 100%;min-width:0;margin:0}
+.hslide img{width:100%;height:500px;object-fit:cover;object-position:center center;display:block}
+.hslide.poster img{object-fit:cover;object-position:center center;background:#07120E}
+@media (max-width:700px){
+  .hslide img{height:260px}
+  .hslide.poster{background:#07120E}
+  .hslide.poster img{object-fit:contain;height:auto;max-height:260px;aspect-ratio:1279/719;margin:0 auto}
+}
+.hcap{padding:14px 18px 16px;background:#fff;text-align:center}
+.hcap .eb{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.hcap p{margin:4px 0 0;font-size:14px;font-weight:700;color:var(--ink)}
+.hdots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:7px;z-index:2}
+.hdots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.55);
+  box-shadow:0 0 0 1px rgba(0,0,0,.15);cursor:pointer}
+.hdots button.on{background:#fff;transform:scale(1.3)}
+.harrow{position:absolute;top:0;bottom:62px;width:40px;display:flex;align-items:center;justify-content:center;
+  background:none;border:0;color:#fff;cursor:pointer;opacity:0;transition:opacity .2s;z-index:2}
+.hslider:hover .harrow,.harrow:focus-visible{opacity:1}
+.harrow.prev{left:0;background:linear-gradient(90deg,rgba(0,0,0,.28),transparent)}
+.harrow.next{right:0;background:linear-gradient(-90deg,rgba(0,0,0,.28),transparent)}
+.harrow svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+
+.hero-card{position:relative;z-index:6;max-width:1040px;margin:8px auto 0;background:#fff;border-radius:22px;
+  box-shadow:var(--shadow);padding:clamp(22px,3vw,32px) clamp(20px,3.4vw,40px)}
+.hero-card .hi{font-size:19px;font-weight:800}
+.hero-card .hi-sub{margin-top:4px;font-size:13.5px;color:var(--ink-2)}
+.hero-fields{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+@media (min-width:760px){.hero-fields{grid-template-columns:repeat(4,1fr) auto;align-items:center;gap:14px}}
+.hf{display:flex;align-items:center;gap:10px}
+.hf svg{width:19px;height:19px;color:var(--accent);flex:none}
+.hf div{display:flex;flex-direction:column;gap:1px}
+.hf .k{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.hf .v{font-size:14.5px;font-weight:700}
+.hf .v.live{color:var(--accent)}
+.hero-fields .btn{justify-self:stretch;justify-content:center}
+
+/* ---- live activity ---- */
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;animation:livepulse 1.5s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.live-dot{animation:none}}
+.live-grid{display:grid;gap:16px;margin-top:44px}
+@media (min-width:640px){.live-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:960px){.live-grid{grid-template-columns:repeat(5,1fr)}}
+.live-tile{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 18px;
+  display:flex;flex-direction:column;gap:4px;transition:box-shadow .4s,border-color .4s}
+.live-tile.bump{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.live-tile b{font-size:clamp(28px,3.4vw,36px);font-weight:800;font-variant-numeric:tabular-nums;color:var(--ink)}
+.live-tile span{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.live-updated{margin-top:22px;font-size:12.5px;color:var(--ink-3)}
+.live-history{margin-top:36px;max-width:620px;margin-inline:auto}
+.lh-title{font-size:12px;color:var(--ink-3);font-weight:700;text-align:left}
+.lh-sub{font-size:11px;color:var(--ink-3);text-align:left;margin-top:4px;line-height:1.5}
+.lh-bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin-top:14px;
+  padding:12px 10px 0;background:#fff;border:1px solid var(--line);border-radius:14px}
+.lh-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%}
+.lh-bar i{display:block;width:100%;max-width:26px;border-radius:5px 5px 0 0;background:var(--accent-2);
+  min-height:3px;transition:height .5s ease}
+.lh-bar i.today{background:var(--accent)}
+.lh-bar i.empty{background:repeating-linear-gradient(135deg,var(--line) 0 3px,transparent 3px 6px);
+  border:1px dashed var(--ink-3);min-height:6px}
+.lh-bar .v{font-size:9.5px;font-weight:800;color:var(--ink-2)}
+.lh-bar .d{font-size:8.5px;color:var(--ink-3)}
+.lh-legend{display:flex;gap:16px;margin-top:10px;font-size:10.5px;color:var(--ink-3)}
+.lh-legend span{display:inline-flex;align-items:center;gap:5px}
+.lh-legend i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.lh-tip{position:relative;display:inline-flex;cursor:help;color:var(--ink-3)}
+.lh-tip svg{width:12px;height:12px}
+.lh-tip-bubble{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-size:10.5px;font-style:normal;white-space:nowrap;
+  padding:6px 10px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:5}
+.lh-tip:hover .lh-tip-bubble,.lh-tip:focus .lh-tip-bubble,.lh-tip:focus-visible .lh-tip-bubble{opacity:1}
+.lh-empty{font-size:12px;color:var(--ink-3);text-align:left;padding:14px 2px}
+
+/* ---- why choose ---- */
+.why-grid{display:grid;gap:28px;margin-top:48px}
+@media (min-width:760px){.why-grid{grid-template-columns:repeat(3,1fr)}}
+.why-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.why-ic{width:62px;height:62px;border-radius:50%;background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center}
+.why-ic svg{width:27px;height:27px}
+.why-card h3{font-size:17px}
+.why-card p{font-size:14px;color:var(--ink-2);max-width:30ch}
+
+/* ---- module strip ---- */
+.mod-strip{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:40px}
+.mod-chip{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:700;color:var(--ink-2)}
+.mod-chip svg{width:16px;height:16px;color:var(--accent)}
+
+/* ---- module cards grid ---- */
+.grid6{display:grid;gap:22px;margin-top:48px}
+@media (min-width:640px){.grid6{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:960px){.grid6{grid-template-columns:repeat(3,1fr)}}
+.mcard{border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff;
+  display:flex;flex-direction:column}
+.mcard-head{height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mcard-head svg.scene{width:100%;height:100%}
+.mcard-head svg{width:34px;height:34px;color:#fff}
+.mcard-body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.mcard-body h3{font-size:16.5px}
+.mcard-body p{font-size:13.5px;color:var(--ink-2);line-height:1.5}
+.mcard-body ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;flex:1}
+.mcard-body li{display:flex;gap:9px;font-size:13px;color:var(--ink-2);line-height:1.45}
+.mcard-body li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none;margin-top:7px}
+.mcard-link{font-size:13px;font-weight:800;color:var(--accent);display:inline-flex;align-items:center;gap:5px;margin-top:10px}
+
+/* ---- grid4 (masalah) ---- */
+.grid4{display:grid;gap:18px;margin-top:48px}
+@media (min-width:640px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:960px){.grid4{grid-template-columns:repeat(4,1fr)}}
+
+/* ---- big-stat band (idea dalam satu ayat) ---- */
+.bigstat-grid{display:grid;gap:18px;margin-top:40px;max-width:860px;margin-inline:auto}
+@media (min-width:640px){.bigstat-grid{grid-template-columns:repeat(3,1fr)}}
+.bigstat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 22px}
+.bigstat b{display:block;font-size:clamp(36px,5vw,48px);font-weight:800;color:var(--accent)}
+.bigstat span{font-size:13.5px;color:var(--ink-2);margin-top:6px;display:block}
+
+/* ---- numbered objective rows ---- */
+.obj-list{display:flex;flex-direction:column;max-width:720px;margin:40px auto 0;text-align:left}
+.obj-row{display:flex;gap:20px;padding:20px 0;border-top:1px solid var(--line)}
+.obj-row:last-child{border-bottom:1px solid var(--line)}
+.obj-row .n{font-size:13px;font-weight:800;color:var(--accent);flex:none;width:24px;padding-top:2px}
+.obj-row h3{font-size:16px}
+.obj-row p{font-size:13.5px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+
+/* ---- comparison table ---- */
+.tbl-wrap{margin-top:44px;overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;min-width:600px;text-align:left}
+.tbl th{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 0 14px;border-bottom:1.5px solid var(--ink)}
+.tbl td{padding:16px 0;border-top:1px solid var(--line);font-size:13.5px;vertical-align:top}
+.tbl td:first-child{font-weight:700;width:24%;padding-right:18px}
+.tbl td:nth-child(2){color:var(--ink-3)}
+.tbl td:nth-child(3){color:var(--accent);font-weight:600}
+
+/* ---- AI cycle diagram: mobile fallback (simple stacked row) ---- */
+.cycle-row{display:none;align-items:stretch;gap:0;margin-top:40px;flex-wrap:wrap;justify-content:center}
+.cy-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;min-width:150px;
+  box-shadow:var(--shadow);text-align:left}
+.cy-box.hot{background:var(--accent);border-color:var(--accent)}
+.cy-box.hot h4,.cy-box.hot p{color:#fff}
+.cy-box h4{font-size:14.5px;font-weight:800}
+.cy-box p{font-size:12px;color:var(--ink-2);margin-top:5px;line-height:1.4}
+.cy-arrow{display:flex;align-items:center;justify-content:center;width:40px;color:var(--ink-3);flex:none}
+.cy-arrow svg{width:20px;height:20px}
+@media (max-width:759px){.cycle-row{display:flex;flex-direction:column;align-items:center}.cy-box{width:100%;max-width:320px}.cy-arrow{transform:rotate(90deg);margin:4px 0}}
+.cy-loop{margin-top:22px;font-size:12.5px;color:var(--ink-3)}
+
+/* ---- AI cycle diagram: full branching rajah (desktop) ---- */
+.cycle-diagram{position:relative;width:100%;max-width:1100px;margin:48px auto 0;aspect-ratio:1481/672;display:none}
+@media (min-width:760px){.cycle-diagram{display:block}}
+.cycle-diagram svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cd-path{stroke:var(--ink-3);stroke-width:2.5;fill:none}
+.cd-path.flow{stroke-dasharray:7 7;animation:cdflow 1s linear infinite}
+@keyframes cdflow{to{stroke-dashoffset:-28}}
+.cd-loop{stroke:var(--ink-3);stroke-width:2;stroke-dasharray:5 7;fill:none;opacity:.75;animation:cdflow 1.6s linear infinite}
+.cd-dot{animation:cddot 2.2s ease-in-out infinite}
+.cd-dot.d2{animation-delay:.55s}
+.cd-dot.d3{animation-delay:1.1s}
+.cd-dot.d4{animation-delay:1.1s}
+@keyframes cddot{0%{offset-distance:0%;opacity:0}8%{opacity:1}92%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@media (prefers-reduced-motion:reduce){.cd-path.flow,.cd-loop,.cd-dot{animation:none}.cd-dot{opacity:0}}
+.cd-box{position:absolute;transform:translate(-50%,-50%);background:#fff;border-radius:16px;
+  border:1.5px solid var(--line);padding:16px 20px;text-align:left;box-shadow:var(--shadow);width:17.5%}
+.cd-box.green{border-color:var(--accent)}
+.cd-box.hot{background:var(--accent);border-color:var(--accent)}
+.cd-box.hot h4,.cd-box.hot p{color:#fff}
+.cd-box h4{font-size:14px;font-weight:800;margin:0}
+.cd-box p{font-size:11.5px;color:var(--ink-2);margin:4px 0 0;line-height:1.4}
+.cd-box.pulse{animation:cdpulse 2.2s ease-in-out infinite}
+.cd-box.pulse.p2{animation-delay:.55s}
+.cd-box.pulse.p3{animation-delay:1.1s}
+.cd-box.pulse.p4{animation-delay:1.65s}
+@keyframes cdpulse{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 6px var(--accent-soft),var(--shadow)}}
+@media (prefers-reduced-motion:reduce){.cd-box.pulse{animation:none}}
+.cd-edgelabel{position:absolute;transform:translate(-50%,-50%);font-size:11.5px;color:var(--ink-3);
+  font-weight:700;background:var(--surface-2);padding:2px 7px;border-radius:999px}
+.cd-looplabel{position:absolute;transform:translateX(-50%);font-size:12px;color:var(--ink-3);white-space:nowrap}
+
+/* ---- promo banner ---- */
+.promo{position:relative;border-radius:0;overflow:hidden}
+.promo-inner{position:relative;min-height:380px;display:flex;align-items:center}
+.promo-bg{position:absolute;inset:0}
+.promo-bg img{width:100%;height:100%;object-fit:cover}
+.promo-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,20,28,.86) 0%,rgba(16,20,28,.55) 48%,rgba(16,20,28,.2) 100%)}
+.promo-grid{position:relative;z-index:2;display:grid;gap:30px;align-items:center;width:100%}
+@media (min-width:860px){.promo-grid{grid-template-columns:1.2fr .8fr}}
+.promo-text{color:#fff}
+.promo-text .eyebrow{color:var(--accent-2)}
+.promo-text h2{color:#fff;font-size:clamp(28px,4.4vw,42px);margin-top:12px}
+.promo-text p{margin-top:14px;color:rgba(255,255,255,.82);font-size:14.5px;max-width:44ch}
+.promo-text .btn{margin-top:22px}
+.promo-thumbs{display:none;gap:12px}
+@media (min-width:860px){.promo-thumbs{display:flex}}
+.promo-thumbs img{width:92px;height:92px;border-radius:14px;object-fit:cover;border:2px solid rgba(255,255,255,.25)}
+
+/* ---- info cards (ciri/risiko) ---- */
+.icard{border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#fff}
+.icard-head{height:96px;display:flex;align-items:center;justify-content:center}
+.icard-head svg{width:30px;height:30px;color:#fff}
+.icard-body{padding:22px}
+.icard-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:5px 12px}
+.icard-body h3{font-size:16.5px;margin-top:12px}
+.icard-body p{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.55}
+
+/* ---- jaminan (dark) ---- */
+.dark-sec{background:var(--navy);color:#fff}
+.dark-sec .eyebrow{color:var(--accent-2)}
+.dark-sec .sec-head h2{color:#fff}
+.dark-sec .sec-head p{color:rgba(255,255,255,.65)}
+.jgrid{display:grid;gap:22px;margin-top:48px}
+@media (min-width:760px){.jgrid{grid-template-columns:repeat(3,1fr)}}
+.jcard{background:var(--navy-2);border:1px solid var(--navy-line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px}
+.jcard .jic{width:44px;height:44px;border-radius:12px;background:rgba(86,166,242,.14);color:var(--accent-2);
+  display:flex;align-items:center;justify-content:center}
+.jcard .jic svg{width:21px;height:21px}
+.jcard h3{color:#fff;font-size:15.5px}
+.jcard p{color:rgba(255,255,255,.62);font-size:13.5px;line-height:1.55}
+
+/* ---- cta ---- */
+.ctaband{display:grid;gap:0;border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+@media (min-width:860px){.ctaband{grid-template-columns:1fr 1fr}}
+.ctaband img{width:100%;height:100%;object-fit:cover;min-height:220px}
+.ctaband-text{background:var(--accent);color:#fff;padding:clamp(32px,4vw,52px);display:flex;flex-direction:column;justify-content:center;gap:16px}
+.ctaband-text h2{color:#fff;font-size:clamp(24px,3.2vw,34px)}
+.ctaband-text p{color:rgba(255,255,255,.85);font-size:14.5px}
+.ctaband-text .btn{background:#fff;color:var(--accent);align-self:flex-start}
+
+/* ---- robotik poster gallery ---- */
+.poster-slider{position:relative;margin-top:48px;max-width:1080px;margin-inline:auto}
+.poster-grid{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  padding:4px 4px 10px;-webkit-overflow-scrolling:touch}
+.poster-grid::-webkit-scrollbar{height:6px}
+.poster-grid::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
+.poster-item{scroll-snap-align:start;flex:0 0 auto;width:210px}
+@media (min-width:640px){.poster-item{width:300px}}
+.poster-nav{position:absolute;top:44%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;
+  background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;
+  color:var(--ink);cursor:pointer;z-index:2}
+.poster-nav.prev{left:-6px}
+.poster-nav.next{right:-6px}
+.poster-nav svg{width:18px;height:18px}
+@media (max-width:760px){.poster-nav{display:none}}
+.poster-item{border:0;background:none;padding:0;cursor:zoom-in;border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);aspect-ratio:3/4;position:relative;display:block}
+.poster-item img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .3s ease}
+.poster-item:hover img{transform:scale(1.05)}
+.poster-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.45));
+  opacity:0;transition:opacity .2s ease}
+.poster-item:hover::after{opacity:1}
+.poster-item .zoom-ic{position:absolute;right:10px;bottom:10px;width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s ease}
+.poster-item:hover .zoom-ic{opacity:1}
+.poster-item .zoom-ic svg{width:14px;height:14px;color:var(--ink)}
+
+.lightbox{position:fixed;inset:0;z-index:100;background:rgba(10,12,16,.92);display:flex;align-items:center;justify-content:center;
+  padding:32px 24px;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.lightbox.show{opacity:1;pointer-events:auto}
+.lightbox img{max-width:min(92vw,520px);max-height:88vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lightbox-close{position:absolute;top:22px;right:26px;width:42px;height:42px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.lightbox-close svg{width:20px;height:20px}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.12);border:0;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.lightbox-nav.prev{left:16px}
+.lightbox-nav.next{right:16px}
+.lightbox-nav svg{width:20px;height:20px}
+@media (max-width:640px){.lightbox-nav{display:none}}
+
+footer{background:var(--navy);color:rgba(255,255,255,.6);padding-block:56px 28px}
+.foot-grid{display:grid;gap:36px}
+@media (min-width:760px){.foot-grid{grid-template-columns:1.4fr 1fr 1fr}}
+.foot-brand{display:flex;align-items:center;gap:9px;color:#fff;font-weight:800;font-size:18px}
+.foot-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2)}
+.foot-grid p{margin-top:12px;font-size:13.5px;line-height:1.6;max-width:36ch}
+.foot-col h4{color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px}
+.foot-col a{display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.62)}
+.foot-bottom{margin-top:44px;padding-top:24px;border-top:1px solid var(--navy-line);display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;font-size:12.5px}
+
+/* ---- live-activity row: 5 independently rotating cards below the slider ---- */
+.act-stack{max-width:1180px;margin:18px auto 0;padding:0 24px;display:grid;gap:12px;
+  grid-template-columns:repeat(5,1fr)}
+@media (max-width:980px){.act-stack{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.act-stack{grid-template-columns:1fr}}
+.act-card{background:#C0392B;color:#fff;border-radius:14px;padding:13px 14px;
+  box-shadow:0 8px 20px -8px rgba(192,57,43,.5);display:flex;gap:9px;align-items:flex-start;min-height:84px}
+.act-card .ic{width:8px;height:8px;border-radius:50%;background:#2ECC71;flex:none;margin-top:5px;
+  box-shadow:0 0 0 2px rgba(46,204,113,.35);animation:actpulse 1.3s ease-in-out infinite}
+@keyframes actpulse{0%,100%{opacity:1}50%{opacity:.35}}
+.act-card .body{flex:1;min-width:0;transition:opacity .25s ease}
+.act-card .body.swap{opacity:0}
+.act-card .body b{display:block;font-size:12.5px;font-weight:800;line-height:1.35;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act-card .body span{display:block;font-size:11px;color:rgba(255,255,255,.82);margin-top:2px;line-height:1.35}
+.act-card .tag{display:inline-block;margin-top:6px;font-size:8.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 7px}
+@media (prefers-reduced-motion:reduce){.act-card .ic{animation:none}.act-card .body{transition:none}}
+
+/* ---- login notification toast ---- */
+.login-toast{position:fixed;left:18px;top:78px;z-index:50;max-width:300px;
+  background:#C0392B;color:#fff;border-radius:14px;padding:13px 15px;
+  box-shadow:0 10px 30px -8px rgba(192,57,43,.55);
+  display:flex;gap:11px;align-items:flex-start;
+  transform:translateY(-16px);opacity:0;pointer-events:none;transition:transform .35s ease,opacity .35s ease}
+.login-toast.show{transform:translateY(0);opacity:1}
+.login-toast .ic{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.login-toast .ic svg{width:17px;height:17px}
+.login-toast .dot{position:absolute;right:-1px;bottom:-1px;width:10px;height:10px;border-radius:50%;
+  background:#2ECC71;border:2px solid #C0392B;animation:loginpulse 1.3s ease-in-out infinite}
+@keyframes loginpulse{0%,100%{opacity:1}50%{opacity:.4}}
+.login-toast .body b{display:block;font-size:13px;font-weight:800;line-height:1.4}
+.login-toast .body span{display:block;font-size:11px;color:rgba(255,255,255,.82);margin-top:1px}
+.login-tip{position:relative;display:inline-flex;vertical-align:middle;margin-left:4px;cursor:help;color:rgba(255,255,255,.75)}
+.login-tip svg{width:12px;height:12px}
+.login-tip-bubble{position:absolute;left:0;top:calc(100% + 7px);transform:none;
+  background:#16181C;color:#fff;font-size:10.5px;font-weight:400;text-transform:none;letter-spacing:normal;
+  white-space:nowrap;padding:6px 10px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:6}
+.login-tip:hover .login-tip-bubble,.login-tip:focus .login-tip-bubble,.login-tip:focus-visible .login-tip-bubble{opacity:1}
+@media (prefers-reduced-motion:reduce){.login-toast{transition:none}.login-toast .dot{animation:none}}
+@media (max-width:480px){.login-toast{left:12px;right:12px;top:70px;max-width:none}}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <nav class="hero-nav">
+    <a class="brand" href="#top"><img src="/logo.png" alt="Logo SmartHadis" width="30" height="30">SmartHadis</a>
+    <div class="links">
+      <a href="#masalah">Masalah</a>
+      <a href="#modul">Modul</a>
+      <a href="#kitaran">Cara AI</a>
+      <a href="#perbandingan">Perbandingan</a>
+      <a href="#risiko">Risiko</a>
+      <a href="#jaminan">Jaminan</a>
+    </div>
+    <div class="menu-wrap">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuPanel">
+        Semua Slaid
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="menu-panel" id="menuPanel" hidden role="menu" aria-label="Semua 16 slaid">
+        <a href="#top" role="menuitem"><i>01</i>Muka Hadapan</a>
+        <a href="#masalah" role="menuitem"><i>02</i>Masalah</a>
+        <a href="#punca" role="menuitem"><i>03</i>Punca Sebenar</a>
+        <a href="#idea" role="menuitem"><i>04</i>Idea Dalam Satu Ayat</a>
+        <a href="#objektif" role="menuitem"><i>05</i>Objektif</a>
+        <a href="#sasaran" role="menuitem"><i>06</i>Sasaran</a>
+        <a href="#modul" role="menuitem"><i>07</i>Lima Modul</a>
+        <a href="#modul-hafazan" class="sub" role="menuitem">Hafazan Pintar</a>
+        <a href="#modul-tanya" class="sub" role="menuitem">Tanya SmartHadis</a>
+        <a href="#modul-misi" class="sub" role="menuitem">Misi Harian &amp; Lencana</a>
+        <a href="#modul-refleksi" class="sub" role="menuitem">Refleksi Amalan</a>
+        <a href="#modul-dashboard" class="sub" role="menuitem">Dashboard Guru</a>
+        <a href="#kitaran" role="menuitem"><i>13</i>Kitaran AI</a>
+        <a href="#perbandingan" role="menuitem"><i>14</i>Perbandingan</a>
+        <a href="#risiko" role="menuitem"><i>15</i>Risiko</a>
+        <a href="#penutup" role="menuitem"><i>16</i>Penutup</a>
+      </div>
+    </div>
+    <a class="btn solid" href="/">Buka Aplikasi</a>
+  </nav>
+  <div class="hero-photo">
+    <div class="hslider" id="headerSlider" role="region" aria-roledescription="gelongsor" aria-label="SmartHadis — poster dan gambar kelas sebenar">
+      <div class="hslider-track" id="headerTrack">
+        <figure class="hslide poster">
+          <img src="/images/poster-banner.webp" alt="SmartHadis Kelantan — pembentang Ustaz Khairul Anuar dan Cikgu Hanafi Thman" width="1279" height="719">
+          <figcaption class="hcap"><span class="eb">SmartHadis Kelantan</span><p>Aplikasi Hadis 40 &mdash; AI-Driven Personalized Hadith Learning</p></figcaption>
+        </figure>
+        <figure class="hslide">
+          <img src="/images/kelas-1.jpg" alt="Murid log masuk kali pertama dengan slip IC dan kata laluan" loading="lazy">
+          <figcaption class="hcap"><span class="eb">Log masuk pertama</span><p>Murid log masuk kali pertama dengan slip IC &amp; kata laluan</p></figcaption>
+        </figure>
+        <figure class="hslide">
+          <img src="/images/kelas-2.jpg" alt="Kelas Pendidikan Islam mencuba SmartHadis serentak" loading="lazy">
+          <figcaption class="hcap"><span class="eb">Kelas sebenar</span><p>Kelas Pendidikan Islam mencuba SmartHadis serentak</p></figcaption>
+        </figure>
+        <figure class="hslide">
+          <img src="/images/kelas-3.jpg" alt="Setiap murid dengan akaun dan slip kata laluan sendiri" loading="lazy">
+          <figcaption class="hcap"><span class="eb">Akaun sendiri</span><p>Setiap murid dengan akaun dan slip kata laluan sendiri</p></figcaption>
+        </figure>
+        <figure class="hslide">
+          <img src="/images/kelas-4.jpg" alt="Sesi sebenar di makmal komputer sekolah" loading="lazy">
+          <figcaption class="hcap"><span class="eb">Makmal komputer</span><p>Sesi sebenar di makmal komputer, SK Bunut Susu</p></figcaption>
+        </figure>
+      </div>
+      <div class="hdots" id="headerDots"></div>
+      <button class="harrow prev" id="headerPrev" aria-label="Sebelum" type="button"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="harrow next" id="headerNext" aria-label="Seterusnya" type="button"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<div class="gutter">
+  <div class="hero-card">
+    <p class="hi">Selamat datang kembali</p>
+    <p class="hi-sub">Log masuk dan teruskan jadual ulang kaji peribadi anda.</p>
+    <div class="hero-fields">
+      <div class="hf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><div><span class="k">Murid</span><span class="v">527 berdaftar</span></div></div>
+      <div class="hf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><div><span class="k">Guru</span><span class="v">43 akaun</span></div></div>
+      <div class="hf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg><div><span class="k">Kelas</span><span class="v">21 diselaraskan</span></div></div>
+      <div class="hf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><span class="k">Status</span><span class="v live">LIVE sekarang</span></div></div>
+      <a class="btn solid" href="/">Buka Aplikasi &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<div class="act-stack" id="actStack" role="status" aria-live="polite" aria-label="Contoh aktiviti murid, dikemas kini secara berkala">
+  <div class="act-card"><span class="ic"></span><div class="body"><b data-name>&mdash;</b><span data-desc>&mdash;</span><span class="tag" data-tag>&mdash;</span></div></div>
+  <div class="act-card"><span class="ic"></span><div class="body"><b data-name>&mdash;</b><span data-desc>&mdash;</span><span class="tag" data-tag>&mdash;</span></div></div>
+  <div class="act-card"><span class="ic"></span><div class="body"><b data-name>&mdash;</b><span data-desc>&mdash;</span><span class="tag" data-tag>&mdash;</span></div></div>
+  <div class="act-card"><span class="ic"></span><div class="body"><b data-name>&mdash;</b><span data-desc>&mdash;</span><span class="tag" data-tag>&mdash;</span></div></div>
+  <div class="act-card"><span class="ic"></span><div class="body"><b data-name>&mdash;</b><span data-desc>&mdash;</span><span class="tag" data-tag>&mdash;</span></div></div>
+</div>
+
+<section class="gutter" id="aktiviti">
+  <div class="wrap center">
+    <p class="eyebrow" style="display:inline-flex;align-items:center;gap:8px"><span class="live-dot"></span>Aktiviti Langsung</p>
+    <div class="sec-head">
+      <h2>Berlaku sekarang di SK Bunut Susu</h2>
+      <p>Nombor ini dikemas kini automatik setiap minit daripada penggunaan sebenar murid dan guru hari ini — bukan demo.</p>
+    </div>
+    <div class="live-grid" id="liveGrid">
+      <div class="live-tile" data-key="murid_aktif_hari_ini"><b data-num>&mdash;</b><span>Murid aktif hari ini</span></div>
+      <div class="live-tile" data-key="hafazan_sesi_hari_ini"><b data-num>&mdash;</b><span>Sesi hafazan hari ini</span></div>
+      <div class="live-tile" data-key="misi_siap_hari_ini"><b data-num>&mdash;</b><span>Misi disiapkan hari ini</span></div>
+      <div class="live-tile" data-key="refleksi_hari_ini"><b data-num>&mdash;</b><span>Refleksi ditulis hari ini</span></div>
+      <div class="live-tile" data-key="soalan_hari_ini"><b data-num>&mdash;</b><span>Soalan ditanya AI hari ini</span></div>
+    </div>
+    <p class="live-updated" id="liveUpdated">Menyambung&hellip;</p>
+
+    <div class="live-history">
+      <p class="lh-title">Sejarah murid aktif &mdash; 7 hari terakhir</p>
+      <div class="lh-bars" id="lhBars"></div>
+      <div class="lh-legend">
+        <span><i style="background:var(--accent)"></i>Hari ini</span>
+        <span><i style="background:var(--accent-2)"></i>Hari lepas
+          <span class="lh-tip" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span class="lh-tip-bubble">Anggaran contoh, bukan rekod sebenar</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="gutter" id="masalah">
+  <div class="wrap center">
+    <p class="eyebrow">Sebelum Ini</p>
+    <div class="sec-head"><h2>Sistem lama tiada akaun peribadi</h2></div>
+    <div class="grid4" style="text-align:left">
+      <div class="icard">
+        <div class="icard-head" style="background:#1B2230"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8.5"/></svg></div>
+        <div class="icard-body"><h3>Satu saiz untuk semua</h3><p>Semua murid mengulang hadis yang sama, pada kadar yang sama. Murid lemah tertinggal; murid kuat menunggu.</p></div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#2F7FE0"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></div>
+        <div class="icard-body"><h3>Generasi digital, kaedah analog</h3><p>Murid hidup dengan skrin interaktif, tetapi belajar hadis melalui hafalan berulang tanpa maklum balas.</p></div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#56A6F2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21l8.84-8.61a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="icard-body"><h3>Hafal belum tentu amal</h3><p>Murid boleh menghafal hadis «jangan marah» dengan lancar, dan bergaduh di waktu rehat pada hari yang sama.</p></div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#1B2230"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+        <div class="icard-body"><h3>Guru &amp; ibu bapa tiada data</h3><p>Penilaian penghayatan bergantung pada tanggapan. Tiada rekod untuk menunjukkan siapa yang benar-benar berubah.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="punca" style="background:var(--surface-2)">
+  <div class="wrap center">
+    <p class="eyebrow">Punca Sebenar</p>
+    <div class="sec-head" style="max-width:720px">
+      <h2>Masalahnya bukan murid tidak boleh menghafal. Masalahnya kita <span style="color:var(--accent)">tidak tahu apa yang berlaku selepas</span> hafazan.</h2>
+      <p>Sistem sedia ada mengukur satu perkara sahaja — berapa banyak teks yang boleh diingat semula pada hari ujian. Ia tidak mengukur sama ada nilai dalam hadis itu benar-benar hidup dalam kelakuan murid pada hari biasa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="idea" style="background:var(--surface-2)">
+  <div class="wrap center">
+    <p class="eyebrow">Idea Dalam Satu Ayat</p>
+    <div class="sec-head" style="max-width:720px">
+      <h2>SmartHadis menyesuaikan pembelajaran Hadis 40 mengikut tahap setiap murid.</h2>
+      <p>Dan menjejak amalannya, bukan sekadar hafazannya.</p>
+    </div>
+    <div class="bigstat-grid">
+      <div class="bigstat"><b>40</b><span>hadis Imam an-Nawawi sebagai korpus tertutup yang disemak guru</span></div>
+      <div class="bigstat"><b>5</b><span>modul: hafazan, chatbot, misi, refleksi, dashboard</span></div>
+      <div class="bigstat"><b>1</b><span>kitaran AI yang berulang setiap hari murid membuka aplikasi</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="objektif">
+  <div class="wrap center">
+    <p class="eyebrow">Objektif</p>
+    <div class="sec-head"><h2>Lima Objektif Projek</h2></div>
+    <div class="obj-list">
+      <div class="obj-row"><span class="n">01</span><div><h3>Personalisasi pembelajaran</h3><p>Menyesuaikan kadar dan urutan pembelajaran Hadis 40 mengikut tahap penguasaan sebenar setiap murid.</p></div></div>
+      <div class="obj-row"><span class="n">02</span><div><h3>Tingkatkan minat murid</h3><p>Menggunakan gamifikasi dan interaktiviti supaya murid kembali kepada hadis secara sukarela, bukan kerana diarah.</p></div></div>
+      <div class="obj-row"><span class="n">03</span><div><h3>Jawapan pantas dan sahih</h3><p>Menyediakan chatbot AI yang menjawab soalan murid tentang hadis dalam korpus yang telah disemak guru.</p></div></div>
+      <div class="obj-row"><span class="n">04</span><div><h3>Pemantauan tanpa beban</h3><p>Memberi guru dan ibu bapa laporan perkembangan automatik tanpa sebarang kemasukan data manual.</p></div></div>
+      <div class="obj-row"><span class="n">05</span><div><h3>Budayakan amalan harian</h3><p>Menukar setiap hadis kepada satu tindakan kecil yang boleh dilakukan murid pada hari yang sama.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="sasaran" style="background:var(--surface-2)">
+  <div class="wrap center">
+    <p class="eyebrow">Sasaran</p>
+    <div class="sec-head"><h2>Tiga Pengguna, Satu Sumber Data</h2></div>
+    <div class="grid6" style="text-align:left;max-width:980px;margin-inline:auto">
+      <div class="icard">
+        <div class="icard-head" style="background:#1B2230"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
+        <div class="icard-body"><span class="icard-tag">Pengguna utama</span><h3>Murid</h3><p>Tahun 4 hingga Tingkatan 5, dalam subjek Pendidikan Islam dan j-QAF. Mereka menghafal, bertanya, melengkapkan misi dan menulis refleksi.</p></div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#2F7FE0"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="icard-body"><span class="icard-tag">Pemantau &amp; penyemak</span><h3>Guru Pendidikan Islam</h3><p>Menggunakannya sebagai alat bantu mengajar dan alat pemantauan kelas. Guru juga menyemak korpus dan boleh menambah misi sendiri.</p></div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#56A6F2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4M8 16h2m4 0h2"/></svg></div>
+        <div class="icard-body"><span class="icard-tag">Penerima laporan</span><h3>Ibu Bapa / Penjaga</h3><p>Menerima ringkasan mingguan tentang perkembangan anak di rumah, tanpa perlu memasang atau mempelajari apa-apa sistem baharu.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="kenapa">
+  <div class="wrap center">
+    <p class="eyebrow">Sebab Memilih Kami</p>
+    <div class="sec-head">
+      <h2>Kenapa Pilih SmartHadis?</h2>
+      <p>Tiga perkara yang membezakan SmartHadis daripada kaedah hafazan konvensional.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82 2 2 0 11-2.83 2.83 1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33 2 2 0 11-2.83-2.83 1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82 2 2 0 112.83-2.83 1.65 1.65 0 001.82.33h0A1.65 1.65 0 009 4.09V4a2 2 0 114 0v.09a1.65 1.65 0 001 1.51h0a1.65 1.65 0 001.82-.33 2 2 0 112.83 2.83 1.65 1.65 0 00-.33 1.82v0c.26.6.852 1 1.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+        <h3>Jadual Peribadi</h3>
+        <p>Selang ulang kaji berkembang bila betul, set semula bila silap — bukan sama untuk semua.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Jawapan Sahih &amp; Selamat</h3>
+        <p>Chatbot terkunci kepada korpus 40 hadis yang disemak Guru Pendidikan Islam.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
+        <h3>Pemantauan Tanpa Beban</h3>
+        <p>Laporan guru dan ibu bapa dijana automatik — sifar kemasukan data manual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" style="padding-block:0 32px">
+  <div class="wrap center">
+    <p class="eyebrow" style="display:block;margin-bottom:22px">Lima Modul</p>
+    <div class="mod-strip">
+      <span class="mod-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Hafazan Pintar</span>
+      <span class="mod-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Tanya SmartHadis</span>
+      <span class="mod-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15a4 4 0 004-4V5a4 4 0 10-8 0v6a4 4 0 004 4z"/><path d="M19 11a7 7 0 01-14 0M12 19v3"/></svg>Misi Harian</span>
+      <span class="mod-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>Refleksi Amalan</span>
+      <span class="mod-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Dashboard Guru</span>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="modul" style="background:var(--surface-2)">
+  <div class="wrap center">
+    <p class="eyebrow">Cuba Sekarang</p>
+    <div class="sec-head"><h2>Lima Modul, Satu Aplikasi</h2></div>
+    <div class="grid6" style="text-align:left">
+      <div class="mcard" id="modul-hafazan">
+        <div class="mcard-head">
+          <svg class="scene" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gH" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7F0FD"/><stop offset="1" stop-color="#CFE2FB"/></linearGradient></defs>
+            <rect width="400" height="150" fill="url(#gH)"/>
+            <g transform="translate(130,78)">
+              <rect x="-58" y="-35" width="55" height="68" rx="6" fill="#2F7FE0" transform="rotate(-7)"/>
+              <rect x="3" y="-35" width="55" height="68" rx="6" fill="#56A6F2" transform="rotate(7)"/>
+              <line x1="-48" y1="-10" x2="-15" y2="-14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+              <line x1="-48" y1="2" x2="-15" y2="-2" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+              <line x1="14" y1="-14" x2="47" y2="-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+              <line x1="14" y1="-2" x2="47" y2="2" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+            </g>
+            <g transform="translate(290,55)">
+              <circle r="34" fill="#fff"/>
+              <circle r="34" fill="none" stroke="#D7E2EC" stroke-width="7"/>
+              <circle r="34" fill="none" stroke="#2F7FE0" stroke-width="7" stroke-linecap="round" stroke-dasharray="178 214" transform="rotate(-90)"/>
+              <path d="M-11 1 L-3 10 L13 -10" fill="none" stroke="#2F7FE0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <path d="M345 95 l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4z" fill="#fff" opacity=".9"/>
+            <path d="M60 105 l3 6 6 3 -6 3 -3 6 -3-6 -6-3 6-3z" fill="#fff" opacity=".75"/>
+          </svg>
+        </div>
+        <div class="mcard-body"><h3>Hafazan Pintar</h3><p>Mengesan tahap hafazan dan menyusun jadual ulangan berjarak. Hadis lemah kembali lebih kerap.</p>
+          <ul><li>Kad hadis dengan bar kemajuan</li><li>Kuiz isi tempat kosong</li><li>Lencana streak harian</li></ul>
+          <span class="mcard-link">Lihat modul &rarr;</span></div>
+      </div>
+      <div class="mcard" id="modul-tanya">
+        <div class="mcard-head">
+          <svg class="scene" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF4FE"/><stop offset="1" stop-color="#D3EAFC"/></linearGradient></defs>
+            <rect width="400" height="150" fill="url(#gT)"/>
+            <g transform="translate(165,72)">
+              <rect x="-80" y="-45" width="160" height="88" rx="22" fill="#fff"/>
+              <path d="M-14 43 L4 43 L-6 62 Z" fill="#fff"/>
+              <text x="0" y="14" font-size="54" font-weight="800" text-anchor="middle" fill="#56A6F2" font-family="sans-serif">?</text>
+            </g>
+            <g transform="translate(318,42)">
+              <path d="M0 -22 l6 16 16 6 -16 6 -6 16 -6-16 -16-6 16-6z" fill="#2F7FE0"/>
+            </g>
+            <circle cx="95" cy="118" r="5" fill="#2F7FE0" opacity=".55"/>
+            <circle cx="112" cy="118" r="5" fill="#2F7FE0" opacity=".75"/>
+            <circle cx="129" cy="118" r="5" fill="#2F7FE0" opacity=".95"/>
+          </svg>
+        </div>
+        <div class="mcard-body"><h3>Tanya SmartHadis</h3><p>Chatbot yang menjawab soalan murid dalam korpus 40 hadis, dan mencadangkan misi berkaitan.</p>
+          <ul><li>Jawapan sesuai umur, dalam bahasa murid sendiri</li><li>Dikunci kepada korpus disemak guru</li><li>Di luar korpus, rujuk kepada guru</li></ul>
+          <span class="mcard-link">Lihat modul &rarr;</span></div>
+      </div>
+      <div class="mcard" id="modul-misi">
+        <div class="mcard-head">
+          <svg class="scene" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EDF0F5"/><stop offset="1" stop-color="#DCE1EA"/></linearGradient></defs>
+            <rect width="400" height="150" fill="url(#gM)"/>
+            <g transform="translate(130,80)">
+              <path d="M-16 8 L-32 52 L-10 42 Z" fill="#1B2230"/>
+              <path d="M16 8 L32 52 L10 42 Z" fill="#1B2230"/>
+              <circle r="38" fill="#D8B84A"/>
+              <circle r="38" fill="none" stroke="#fff" stroke-width="3" opacity=".5"/>
+              <path d="M0 -16 l7 15 16 2 -12 11 3 16 -14-8 -14 8 3-16 -12-11 16-2z" fill="#fff"/>
+            </g>
+            <g transform="translate(275,70)">
+              <rect x="-55" y="-32" width="110" height="64" rx="12" fill="#fff"/>
+              <circle cx="-30" cy="-10" r="7" fill="none" stroke="#2F7FE0" stroke-width="3"/>
+              <path d="M-33 -10 l2 3 5-6" fill="none" stroke="#2F7FE0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="-13" y1="-10" x2="38" y2="-10" stroke="#C8D0DC" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="-30" cy="14" r="7" fill="none" stroke="#C8D0DC" stroke-width="3"/>
+              <line x1="-13" y1="14" x2="38" y2="14" stroke="#C8D0DC" stroke-width="4" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mcard-body"><h3>Misi Harian &amp; Lencana</h3><p>Setiap hadis diterjemahkan kepada satu tindakan kecil yang boleh disiapkan hari itu juga.</p>
+          <ul><li>Misi dijana daripada hadis yang sedang diulang</li><li>Lencana untuk istiqamah, bukan kelajuan</li><li>Guru boleh menambah misi sendiri</li></ul>
+          <span class="mcard-link">Lihat modul &rarr;</span></div>
+      </div>
+      <div class="mcard" id="modul-refleksi">
+        <div class="mcard-head">
+          <svg class="scene" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7F0FD"/><stop offset="1" stop-color="#CFE2FB"/></linearGradient></defs>
+            <rect width="400" height="150" fill="url(#gR)"/>
+            <g transform="translate(185,75) rotate(-5)">
+              <rect x="-70" y="-50" width="140" height="100" rx="10" fill="#fff"/>
+              <rect x="-70" y="-50" width="140" height="18" rx="10" fill="#2F7FE0"/>
+              <circle cx="-56" cy="-18" r="4" fill="#CFE2FB"/>
+              <circle cx="-56" cy="0" r="4" fill="#CFE2FB"/>
+              <circle cx="-56" cy="18" r="4" fill="#CFE2FB"/>
+              <line x1="-40" y1="-18" x2="45" y2="-18" stroke="#D7E2EC" stroke-width="5" stroke-linecap="round"/>
+              <line x1="-40" y1="2" x2="45" y2="2" stroke="#D7E2EC" stroke-width="5" stroke-linecap="round"/>
+              <line x1="-40" y1="22" x2="20" y2="22" stroke="#D7E2EC" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(300,45) rotate(42)">
+              <rect x="-6" y="-45" width="12" height="80" rx="4" fill="#D8B84A"/>
+              <path d="M-6 -45 L0 -62 L6 -45 Z" fill="#1B2230"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mcard-body"><h3>Refleksi Amalan</h3><p>Murid mencatat apa yang berlaku hari itu dan memilih nilai yang paling dekat.</p>
+          <ul><li>AI mengesan corak catatan murid</li><li>Mencadangkan hadis seterusnya yang paling relevan</li><li>Bukan sekadar hadis seterusnya dalam senarai</li></ul>
+          <span class="mcard-link">Lihat modul &rarr;</span></div>
+      </div>
+      <div class="mcard" id="modul-dashboard">
+        <div class="mcard-head">
+          <svg class="scene" viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="gD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF4FE"/><stop offset="1" stop-color="#D3EAFC"/></linearGradient></defs>
+            <rect width="400" height="150" fill="url(#gD)"/>
+            <g transform="translate(130,105)">
+              <rect x="-70" y="-30" width="24" height="30" rx="4" fill="#56A6F2"/>
+              <rect x="-38" y="-55" width="24" height="55" rx="4" fill="#2F7FE0"/>
+              <rect x="-6" y="-18" width="24" height="18" rx="4" fill="#56A6F2"/>
+              <rect x="26" y="-42" width="24" height="42" rx="4" fill="#2F7FE0"/>
+              <line x1="-78" y1="0" x2="58" y2="0" stroke="#B9CFE8" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(300,48)">
+              <circle r="30" fill="#fff"/>
+              <circle cy="-7" r="10" fill="none" stroke="#2F7FE0" stroke-width="4"/>
+              <path d="M-16 18 a16 14 0 0 1 32 0" fill="none" stroke="#2F7FE0" stroke-width="4" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="mcard-body"><h3>Dashboard Guru</h3><p>Laporan mingguan dijana secara automatik daripada penggunaan sebenar murid.</p>
+          <ul><li>Empat metrik utama sekelas</li><li>Senarai murid dengan status: cemerlang, baik, perlu bantuan</li><li>Sifar kemasukan data manual</li></ul>
+          <span class="mcard-link">Lihat modul &rarr;</span></div>
+      </div>
+      <div class="mcard" style="background:var(--accent-soft);border-color:#C9E1FA">
+        <div class="mcard-head" style="background:transparent;height:auto;padding-top:20px"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <div class="mcard-body"><h3>Aplikasi Sudah Berfungsi</h3><p>Kelima-lima modul ini sudah boleh dicuba secara langsung, sekarang.</p><span class="mcard-link">Buka Aplikasi &rarr;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="kitaran" style="background:var(--surface-2)">
+  <div class="wrap center">
+    <p class="eyebrow">Cara AI Berfungsi</p>
+    <div class="sec-head"><h2>Satu Kitaran Yang Berulang Setiap Hari</h2></div>
+    <div class="cycle-diagram" role="img" aria-label="Rajah kitaran: input murid menjadi rekod untuk analisis AI, analisis menentukan tahap untuk personalisasi, personalisasi menghasilkan paparan murid dan laporan guru, dan paparan murid digunakan semula oleh murid keesokan hari">
+      <svg viewBox="0 0 1481 672">
+        <defs>
+          <marker id="cdHead" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--ink-3)"/></marker>
+        </defs>
+        <path class="cd-path flow" marker-end="url(#cdHead)" d="M332,438 L412,438"/>
+        <path class="cd-path flow" marker-end="url(#cdHead)" d="M690,438 L770,438"/>
+        <path class="cd-path flow" marker-end="url(#cdHead)" d="M1048,412 L1143,306"/>
+        <path class="cd-path flow" marker-end="url(#cdHead)" d="M1048,464 L1143,580"/>
+        <path class="cd-loop" id="cdLoopPath" marker-end="url(#cdHead)" d="M1160,254 C 980,110 420,110 210,372"/>
+        <circle class="cd-dot d1" r="4.5" fill="var(--accent)" style="offset-path:path('M332,438 L412,438')"/>
+        <circle class="cd-dot d2" r="4.5" fill="var(--accent)" style="offset-path:path('M690,438 L770,438')"/>
+        <circle class="cd-dot d3" r="4.5" fill="var(--accent)" style="offset-path:path('M1048,412 L1143,306')"/>
+        <circle class="cd-dot d4" r="4.5" fill="var(--accent)" style="offset-path:path('M1048,464 L1143,580')"/>
+      </svg>
+      <div class="cd-edgelabel" style="left:25.12%;top:62.5%">rekod</div>
+      <div class="cd-edgelabel" style="left:49.29%;top:62.5%">tahap</div>
+      <div class="cd-looplabel" style="left:46.25%;top:15.18%">murid guna semula keesokan hari</div>
+
+      <div class="cd-box green pulse p1" style="left:13.30%;top:65.18%"><h4>Input murid</h4><p>kuiz &middot; soalan &middot; refleksi</p></div>
+      <div class="cd-box green pulse p2" style="left:37.47%;top:65.18%"><h4>Analisis AI</h4><p>corak jawapan &amp; tahap penguasaan</p></div>
+      <div class="cd-box hot pulse p3" style="left:61.65%;top:65.18%"><h4>Personalisasi</h4><p>jadual ulangan &amp; misi disesuaikan</p></div>
+      <div class="cd-box pulse p4" style="left:87.17%;top:45.24%"><h4>Paparan murid</h4><p>misi &amp; peringatan baharu</p></div>
+      <div class="cd-box pulse p4" style="left:87.17%;top:86.61%"><h4>Guru &amp; ibu bapa</h4><p>laporan kemajuan mingguan</p></div>
+    </div>
+
+    <div class="cycle-row">
+      <div class="cy-box"><h4>Input Murid</h4><p>Kuiz &middot; soalan &middot; refleksi</p></div>
+      <div class="cy-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="cy-box"><h4>Analisis AI</h4><p>Corak jawapan &amp; tahap penguasaan</p></div>
+      <div class="cy-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="cy-box hot"><h4>Personalisasi</h4><p>Jadual ulangan &amp; misi disesuaikan</p></div>
+      <div class="cy-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="cy-box"><h4>Paparan Murid &amp; Guru</h4><p>Misi baharu untuk murid, laporan mingguan untuk guru &amp; ibu bapa</p></div>
+    </div>
+    <p class="cy-loop center">Paparan murid menjadi input pada hari berikutnya — kitaran ini berulang setiap kali murid membuka aplikasi.</p>
+  </div>
+</section>
+
+<section class="promo">
+  <div class="promo-inner gutter">
+    <div class="promo-bg"><img src="/images/kelas-1.jpg" alt="Murid log masuk kali pertama dengan slip IC dan kata laluan"></div>
+    <div class="wrap promo-grid">
+      <div class="promo-text">
+        <p class="eyebrow">Status Sekarang</p>
+        <h2>Sudah hidup di SK Bunut Susu.</h2>
+        <p>Bukan konsep atau demo — sistem berjalan dengan data murid dan guru sebenar sekolah ini. Setiap murid berdaftar IC boleh log masuk sekarang.</p>
+        <a class="btn solid" href="/">Buka Aplikasi &rarr;</a>
+      </div>
+      <div class="promo-thumbs">
+        <img src="/images/kelas-3.jpg" alt="Setiap murid dengan akaun dan slip kata laluan sendiri">
+        <img src="/images/kelas-4.jpg" alt="Sesi sebenar di makmal komputer sekolah">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="perbandingan">
+  <div class="wrap center">
+    <p class="eyebrow">Perbandingan</p>
+    <div class="sec-head"><h2>Kaedah Sedia Ada Berbanding SmartHadis</h2></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <tr><th>Aspek</th><th>Kaedah sedia ada</th><th>SmartHadis</th></tr>
+        <tr><td>Kadar ulangan</td><td>Sama untuk seluruh kelas</td><td>Mengikut tahap setiap murid</td></tr>
+        <tr><td>Sumber jawapan</td><td>Menunggu giliran bertanya guru</td><td>Chatbot sepanjang masa, dalam korpus disemak guru</td></tr>
+        <tr><td>Amalan harian</td><td>Diandaikan berlaku</td><td>Direkod sebagai misi dan refleksi</td></tr>
+        <tr><td>Laporan guru</td><td>Manual, hujung penggal</td><td>Automatik, setiap minggu</td></tr>
+        <tr><td>Peranan ibu bapa</td><td>Menerima keputusan sahaja</td><td>Nampak perkembangan setiap minggu</td></tr>
+        <tr><td>Murid lemah</td><td>Tertinggal secara senyap</td><td>Dikesan automatik dan ditandakan untuk bantuan</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="risiko">
+  <div class="wrap center">
+    <p class="eyebrow">Risiko &amp; Mitigasi</p>
+    <div class="sec-head"><h2>Risiko Yang Kami Jangka</h2></div>
+    <div class="grid6" style="text-align:left">
+      <div class="icard">
+        <div class="icard-head" style="background:#2F7FE0"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Privasi</span>
+          <h3>Privasi Data Murid</h3>
+          <p>Data minimum sahaja, tanpa nama penuh dalam sistem, dengan kebenaran bertulis ibu bapa sebelum rintis.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#1B2230"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Ketepatan</span>
+          <h3>Ketepatan Jawapan Agama</h3>
+          <p>Chatbot dikunci kepada korpus 40 hadis yang disemak Guru Pendidikan Islam. Soalan di luar korpus dirujuk kepada guru.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#56A6F2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Masa Guru</span>
+          <h3>Guru Tiada Masa Tambahan</h3>
+          <p>Sifar kemasukan data manual. Laporan dijana automatik daripada aktiviti murid.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#1B2230"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M18 12h.01"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Akses</span>
+          <h3>Akses Peranti Tidak Sama Rata</h3>
+          <p>Sesi mingguan di makmal komputer sekolah, dan mod penggunaan berkongsi peranti untuk murid tanpa telefon.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#2F7FE0"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Amalan</span>
+          <h3>Murid Menanda Misi Tanpa Mengamalkannya</h3>
+          <p>Misi terpilih memerlukan pengesahan ibu bapa atau guru, dan refleksi bertulis yang dibaca guru.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <div class="icard-head" style="background:#56A6F2"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h8l-1 8 11-14h-8z"/></svg></div>
+        <div class="icard-body">
+          <span class="icard-tag">Minat</span>
+          <h3>Minat Murid Menurun Selepas Novelty</h3>
+          <p>Misi berubah setiap hari mengikut hadis yang sedang diulang, dan lencana memberi ganjaran kepada konsistensi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark-sec gutter" id="jaminan">
+  <div class="wrap center">
+    <p class="eyebrow">Jaminan Kami</p>
+    <div class="sec-head"><h2>Dibina Dengan Berhati-hati</h2><p>Tiga komitmen yang dipegang sepanjang pembinaan SmartHadis.</p></div>
+    <div class="jgrid" style="text-align:left">
+      <div class="jcard">
+        <div class="jic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg></div>
+        <h3>Data murid dijaga</h3>
+        <p>Tiada nama penuh disimpan tanpa keperluan, kebenaran bertulis ibu bapa sebelum sebarang rintis.</p>
+      </div>
+      <div class="jcard">
+        <div class="jic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Disemak guru, bukan AI sahaja</h3>
+        <p>Setiap jawapan chatbot terikat kepada korpus hadis yang telah disahkan Guru Pendidikan Islam.</p>
+      </div>
+      <div class="jcard">
+        <div class="jic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+        <h3>Diuji di kelas sebenar</h3>
+        <p>Bukan prototaip — dijalankan sepanjang beberapa minggu dengan murid dan guru sebenar sekolah ini.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="penutup">
+  <div class="wrap">
+    <div class="ctaband">
+      <img src="/images/kelas-3.jpg" alt="Setiap murid dengan akaun dan slip kata laluan sendiri">
+      <div class="ctaband-text">
+        <p class="eyebrow" style="color:rgba(255,255,255,.85)">Sedia Untuk Soalan</p>
+        <h2>Aplikasi boleh dicuba di tempat, sekarang.</h2>
+        <p>smarthadis.lynx.my &middot; SK Bunut Susu</p>
+        <a class="btn" href="/">Buka Aplikasi SmartHadis &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gutter" id="robotik">
+  <div class="wrap center">
+    <p class="eyebrow">Karnival Jejak Imam Nawawi &middot; Kontinjen Kelantan, SMKA Falahiah</p>
+    <div class="sec-head"><h2>Penggunaan Robotik Beretika Menurut Hadis 40</h2></div>
+    <div class="poster-slider">
+    <button class="poster-nav prev" id="posterPrev" type="button" aria-label="Tatal ke kiri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="poster-grid" id="posterGrid">
+      <button class="poster-item" type="button" data-full="/images/robotik-20.jpg">
+        <img src="/images/robotik-20.jpg" alt="Poster Hadis 1 — Penggunaan Robotik Dalam Kehidupan" loading="lazy">
+        <span class="zoom-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button class="poster-item" type="button" data-full="/images/robotik-21.jpg">
+        <img src="/images/robotik-21.jpg" alt="Poster Hadis 12 — Teknologi Robotik Untuk Masyarakat" loading="lazy">
+        <span class="zoom-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button class="poster-item" type="button" data-full="/images/robotik-22.jpg">
+        <img src="/images/robotik-22.jpg" alt="Poster Hadis 32 — Menghindari Kemudaratan" loading="lazy">
+        <span class="zoom-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+      <button class="poster-item" type="button" data-full="/images/robotik-23.jpg">
+        <img src="/images/robotik-23.jpg" alt="Poster Hadis 36 — Keutamaan Ilmu" loading="lazy">
+        <span class="zoom-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>
+      </button>
+    </div>
+    <button class="poster-nav next" id="posterNext" type="button" aria-label="Tatal ke kanan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="posterLightbox" role="dialog" aria-modal="true" aria-label="Paparan penuh poster">
+  <button class="lightbox-close" id="lbClose" type="button" aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <button class="lightbox-nav prev" id="lbPrev" type="button" aria-label="Sebelum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <img id="lbImg" src="" alt="">
+  <button class="lightbox-nav next" id="lbNext" type="button" aria-label="Seterusnya"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
+
+<div class="login-toast" id="loginToast" role="status" aria-live="polite">
+  <span class="ic">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+    <span class="dot"></span>
+  </span>
+  <div class="body">
+    <b id="loginToastName">&mdash;</b>
+    <span id="loginToastDesc">baru log masuk
+      <span class="login-tip" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span class="login-tip-bubble">Contoh — bukan notifikasi sebenar</span>
+      </span>
+    </span>
+  </div>
+</div>
+
+<footer class="gutter">
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-brand"><span class="dot"></span>SmartHadis</div>
+      <p>Pembelajaran hafazan hadis dibantu AI — satu akaun untuk setiap murid, setiap guru, di Sekolah Kebangsaan Bunut Susu.</p>
+    </div>
+    <div class="foot-col">
+      <h4>Pautan</h4>
+      <a href="/">Buka Aplikasi</a>
+      <a href="#modul">Modul</a>
+      <a href="#jaminan">Jaminan</a>
+    </div>
+    <div class="foot-col">
+      <h4>Hubungi</h4>
+      <span style="display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.62)">Soalan? Hubungi pentadbir sistem sekolah.</span>
+      <span style="display:block;font-size:13.5px;padding:5px 0;color:rgba(255,255,255,.62)">smarthadis.lynx.my</span>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>&copy; SmartHadis &middot; SK Bunut Susu</span>
+    <span>Oktober 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var track = document.getElementById("headerTrack");
+var dotsWrap = document.getElementById("headerDots");
+if (!track || !dotsWrap) return;
+var slides = track.children;
+var n = slides.length;
+var i = 0;
+var dots = [];
+for (var d = 0; d < n; d++) {
+  var b = document.createElement("button");
+  b.type = "button";
+  b.setAttribute("aria-label", "Gambar " + (d + 1));
+  (function(idx){ b.addEventListener("click", function(){ goTo(idx); resetAuto(); }); })(d);
+  dotsWrap.appendChild(b);
+  dots.push(b);
+}
+function goTo(idx){
+  i = (idx + n) % n;
+  track.style.transform = "translateX(-" + (i * 100) + "%)";
+  dots.forEach(function(dot, k){ dot.classList.toggle("on", k === i); });
+}
+var prevBtn = document.getElementById("headerPrev");
+var nextBtn = document.getElementById("headerNext");
+if (prevBtn) prevBtn.addEventListener("click", function(){ goTo(i - 1); resetAuto(); });
+if (nextBtn) nextBtn.addEventListener("click", function(){ goTo(i + 1); resetAuto(); });
+
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var autoId = null;
+function startAuto(){ if (reduceMotion) return; autoId = setInterval(function(){ goTo(i + 1); }, 5200); }
+function stopAuto(){ if (autoId) { clearInterval(autoId); autoId = null; } }
+function resetAuto(){ stopAuto(); startAuto(); }
+
+var slider = document.getElementById("headerSlider");
+if (slider) {
+  slider.addEventListener("mouseenter", stopAuto);
+  slider.addEventListener("mouseleave", startAuto);
+  slider.addEventListener("focusin", stopAuto);
+  slider.addEventListener("focusout", startAuto);
+  var touchX = null;
+  slider.addEventListener("touchstart", function(e){ touchX = e.touches[0].clientX; stopAuto(); }, {passive:true});
+  slider.addEventListener("touchend", function(e){
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? i + 1 : i - 1);
+    touchX = null;
+    startAuto();
+  }, {passive:true});
+}
+goTo(0);
+startAuto();
+})();
+</script>
+
+<script>
+(function(){
+"use strict";
+var grid = document.getElementById("liveGrid");
+var updatedEl = document.getElementById("liveUpdated");
+if (!grid || !updatedEl) return;
+var tiles = {};
+grid.querySelectorAll(".live-tile").forEach(function(t){
+  tiles[t.dataset.key] = { el: t, num: t.querySelector("[data-num]"), value: null };
+});
+var lastFetchedAt = null;
+var lhBars = document.getElementById("lhBars");
+var historyRendered = false;
+
+function renderHistory(history, serverNowIso){
+  if (!lhBars || historyRendered || !Array.isArray(history)) return;
+  historyRendered = true;
+
+  var byDate = {};
+  history.forEach(function(h){ byDate[h.tarikh] = h; });
+
+  // Reference "today" from the server's own clock (kemaskini_pada), not the
+  // viewer's device clock — keeps the frame correct even if a viewer's
+  // local clock/timezone disagrees with the server.
+  var serverNow = serverNowIso ? new Date(serverNowIso) : new Date();
+
+  // Always show a full 7-day frame (today + 6 days back). Days with no
+  // row yet in stats_history_log render as an honest "no data" placeholder
+  // instead of an invented number.
+  var FRAME_DAYS = 7;
+  var frame = [];
+  for (var i = FRAME_DAYS - 1; i >= 0; i--) {
+    var d = new Date(serverNow);
+    d.setUTCDate(d.getUTCDate() - i);
+    var key = d.toISOString().slice(0, 10);
+    frame.push({ tarikh: key, date: d, row: byDate[key] || null });
+  }
+
+  var max = Math.max(1, Math.max.apply(null, history.map(function(h){ return h.murid_aktif; }).concat([0])));
+  var todayStr = serverNow.toISOString().slice(0, 10);
+  lhBars.innerHTML = "";
+  frame.forEach(function(f){
+    var parts = f.tarikh.split("-");
+    var label = parts[2] + "/" + parts[1];
+    var isToday = f.tarikh === todayStr;
+    var col = document.createElement("div");
+    col.className = "lh-bar";
+    if (f.row) {
+      var pct = Math.max(4, Math.round((f.row.murid_aktif / max) * 100));
+      col.innerHTML = '<span class="v">' + f.row.murid_aktif + '</span>' +
+        '<i class="' + (isToday ? "today" : "") + '" style="height:' + pct + '%"></i>' +
+        '<span class="d">' + label + '</span>';
+    } else {
+      col.innerHTML = '<span class="v">&nbsp;</span>' +
+        '<i class="empty" style="height:4%"></i>' +
+        '<span class="d">' + label + '</span>';
+    }
+    lhBars.appendChild(col);
+  });
+}
+
+function animateTo(numEl, from, to){
+  if (from === null || from === to) { numEl.textContent = to; return; }
+  var start = performance.now();
+  var dur = 650;
+  function step(now){
+    var p = Math.min(1, (now - start) / dur);
+    var eased = 1 - Math.pow(1 - p, 3);
+    numEl.textContent = Math.round(from + (to - from) * eased);
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function applyStats(data){
+  Object.keys(tiles).forEach(function(key){
+    var t = tiles[key];
+    var next = Number(data[key]);
+    if (!Number.isFinite(next)) return;
+    if (t.value !== next) {
+      animateTo(t.num, t.value, next);
+      if (t.value !== null) {
+        t.el.classList.add("bump");
+        setTimeout(function(){ t.el.classList.remove("bump"); }, 1200);
+      }
+      t.value = next;
+    }
+  });
+  if (data.kemaskini_pada) lastFetchedAt = new Date(data.kemaskini_pada);
+  renderHistory(data.history, data.kemaskini_pada);
+}
+
+function tickClock(){
+  if (!lastFetchedAt) { updatedEl.textContent = "Menyambung…"; return; }
+  var secs = Math.max(0, Math.round((Date.now() - lastFetchedAt.getTime()) / 1000));
+  var label = secs < 60 ? (secs + " saat lalu") : (Math.round(secs / 60) + " minit lalu");
+  updatedEl.textContent = "Dikemas kini " + label;
+}
+
+function poll(){
+  fetch("/stats.json", { cache: "no-store" })
+    .then(function(r){ if (!r.ok) throw new Error("bad status"); return r.json(); })
+    .then(applyStats)
+    .catch(function(){ /* keep last known values, say nothing alarming */ });
+}
+
+poll();
+setInterval(poll, 20000);
+setInterval(tickClock, 1000);
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var toggle = document.getElementById("menuToggle");
+var panel = document.getElementById("menuPanel");
+if (!toggle || !panel) return;
+
+function openMenu(){ panel.hidden = false; toggle.setAttribute("aria-expanded", "true"); }
+function closeMenu(){ panel.hidden = true; toggle.setAttribute("aria-expanded", "false"); }
+
+toggle.addEventListener("click", function(e){
+  e.stopPropagation();
+  panel.hidden ? openMenu() : closeMenu();
+});
+panel.addEventListener("click", function(e){
+  if (e.target.closest("a")) closeMenu();
+});
+document.addEventListener("click", function(e){
+  if (!panel.hidden && !panel.contains(e.target) && e.target !== toggle) closeMenu();
+});
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !panel.hidden) { closeMenu(); toggle.focus(); }
+});
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var cards = Array.prototype.slice.call(document.querySelectorAll('.act-card'));
+if (!cards.length) return;
+
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var NAMES = [
+  "Ahmad Danish","Nur Elisya","Muhammad Haziq","Siti Maisarah","Amir Hakimi",
+  "Nurul Ain","Muhammad Aiman","Fatin Nabila","Danial Irfan","Aina Safiyyah",
+  "Haziq Daniyal","Nur Alya","Amirul Hakim","Siti Hajar","Muhammad Rayyan",
+  "Nur Qistina","Adam Haziq","Wan Nur Ain","Muhammad Faris","Nurin Sofea",
+  "Muhammad Irfan","Nur Batrisyia","Ahmad Zikri","Siti Nurhaliza","Muhammad Luqman",
+  "Nur Dania","Amir Syafiq","Nurul Izzah","Muhammad Hafiz","Siti Khadijah",
+  "Danish Iman","Nur Humaira","Muhammad Zaid","Aisyah Humaira","Haikal Hakimi",
+  "Nur Syahirah","Muhammad Akmal","Siti Zulaikha","Amirul Ariff","Nur Aqilah",
+  "Muhammad Danial","Nurul Syafiqah","Ahmad Firdaus","Siti Nurul Ain","Muhammad Afiq",
+  "Nur Aina","Haziq Irfan","Nurul Huda","Muhammad Nabil","Siti Aminah"
+];
+var ACTIVITIES = [
+  "Hafazan Pintar", "Tanya SmartHadis", "Misi Harian", "Refleksi Amalan"
+];
+
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+function swap(card){
+  var body = card.querySelector('.body');
+  var nameEl = card.querySelector('[data-name]');
+  var descEl = card.querySelector('[data-desc]');
+  var tagEl = card.querySelector('[data-tag]');
+  if (reduceMotion) {
+    nameEl.textContent = pick(NAMES);
+    descEl.textContent = "sedang membuat " + pick(ACTIVITIES);
+    if (tagEl) tagEl.textContent = pick(ACTIVITIES);
+  } else {
+    body.classList.add('swap');
+    setTimeout(function(){
+      nameEl.textContent = pick(NAMES);
+      descEl.textContent = "sedang membuat " + pick(ACTIVITIES);
+      if (tagEl) tagEl.textContent = pick(ACTIVITIES);
+      body.classList.remove('swap');
+    }, 250);
+  }
+  scheduleCard(card);
+}
+
+function scheduleCard(card){
+  var delay = 4000 + Math.random() * 6000;
+  setTimeout(function(){ swap(card); }, delay);
+}
+
+cards.forEach(function(card, i){
+  setTimeout(function(){ swap(card); }, 300 + i * 450);
+});
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var grid = document.getElementById("posterGrid");
+var lightbox = document.getElementById("posterLightbox");
+if (!grid || !lightbox) return;
+var items = Array.prototype.slice.call(grid.querySelectorAll(".poster-item"));
+var lbImg = document.getElementById("lbImg");
+var idx = 0;
+
+var pPrev = document.getElementById("posterPrev");
+var pNext = document.getElementById("posterNext");
+function scrollByCard(dir){
+  var card = items[0];
+  var step = card.getBoundingClientRect().width + 16;
+  grid.scrollBy({ left: dir * step * 2, behavior: "smooth" });
+}
+if (pPrev) pPrev.addEventListener("click", function(){ scrollByCard(-1); stopAuto(); startAuto(); });
+if (pNext) pNext.addEventListener("click", function(){ scrollByCard(1); stopAuto(); startAuto(); });
+
+var posterReduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var posterAutoId = null;
+function posterTick(){
+  var atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 8;
+  if (atEnd) grid.scrollTo({ left: 0, behavior: "smooth" });
+  else scrollByCard(1);
+}
+function startAuto(){ if (posterReduceMotion) return; posterAutoId = setInterval(posterTick, 3200); }
+function stopAuto(){ if (posterAutoId) { clearInterval(posterAutoId); posterAutoId = null; } }
+grid.addEventListener("mouseenter", stopAuto);
+grid.addEventListener("mouseleave", startAuto);
+grid.addEventListener("touchstart", stopAuto, { passive: true });
+grid.addEventListener("touchend", function(){ setTimeout(startAuto, 2000); }, { passive: true });
+startAuto();
+
+function openAt(i){
+  idx = (i + items.length) % items.length;
+  var src = items[idx].getAttribute("data-full");
+  lbImg.src = src;
+  lbImg.alt = items[idx].querySelector("img").alt;
+  lightbox.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function close(){
+  lightbox.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+items.forEach(function(btn, i){ btn.addEventListener("click", function(){ openAt(i); }); });
+document.getElementById("lbClose").addEventListener("click", close);
+document.getElementById("lbPrev").addEventListener("click", function(){ openAt(idx - 1); });
+document.getElementById("lbNext").addEventListener("click", function(){ openAt(idx + 1); });
+lightbox.addEventListener("click", function(e){ if (e.target === lightbox) close(); });
+document.addEventListener("keydown", function(e){
+  if (!lightbox.classList.contains("show")) return;
+  if (e.key === "Escape") close();
+  else if (e.key === "ArrowLeft") openAt(idx - 1);
+  else if (e.key === "ArrowRight") openAt(idx + 1);
+});
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var toast = document.getElementById("loginToast");
+var nameEl = document.getElementById("loginToastName");
+if (!toast || !nameEl) return;
+
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var NAMES = [
+  "Ahmad Danish","Nur Elisya","Muhammad Haziq","Siti Maisarah","Amir Hakimi",
+  "Nurul Ain","Muhammad Aiman","Fatin Nabila","Danial Irfan","Aina Safiyyah",
+  "Haziq Daniyal","Nur Alya","Amirul Hakim","Siti Hajar","Muhammad Rayyan",
+  "Nur Qistina","Adam Haziq","Wan Nur Ain","Muhammad Faris","Nurin Sofea",
+  "Muhammad Irfan","Nur Batrisyia","Ahmad Zikri","Siti Nurhaliza","Muhammad Luqman",
+  "Nur Dania","Amir Syafiq","Nurul Izzah","Muhammad Hafiz","Siti Khadijah",
+  "Danish Iman","Nur Humaira","Muhammad Zaid","Aisyah Humaira","Haikal Hakimi",
+  "Nur Syahirah","Muhammad Akmal","Siti Zulaikha","Amirul Ariff","Nur Aqilah",
+  "Muhammad Danial","Nurul Syafiqah","Ahmad Firdaus","Siti Nurul Ain","Muhammad Afiq",
+  "Nur Aina","Haziq Irfan","Nurul Huda","Muhammad Nabil","Siti Aminah"
+];
+
+var timer = null;
+var hideTimer = null;
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+function fire(){
+  nameEl.textContent = pick(NAMES);
+  toast.classList.add("show");
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(function(){ toast.classList.remove("show"); }, reduceMotion ? 3500 : 4200);
+  schedule();
+}
+function schedule(){
+  clearTimeout(timer);
+  var delay = 9000 + Math.random() * 9000;
+  timer = setTimeout(fire, delay);
+}
+
+setTimeout(fire, 4000);
+})();
+</script>
+</body>
+</html>

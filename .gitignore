@@ -1,0 +1,13 @@
+# secrets / environment
+.env
+*.env
+!.env.example
+test-only.env
+
+# Rust build output
+backend/target/
+**/target/
+
+# OS / editor cruft
+.DS_Store
+*.swp
